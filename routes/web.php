@@ -20,3 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('customer', 'CustomerController')->names('cliente');
+Route::resource('user', 'UserController')->names('usuario');
+Route::get('/api/users', 'UserController@getInfoDataTable');
+Route::resource('calendar', 'CalendarController')->names('calendario');
+Route::get('profile', 'UserController@profile')->name('perfil');

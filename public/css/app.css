@@ -10903,3 +10903,17 @@ a.text-dark:focus {
   }
 }
 
+.formCustomer {
+  width: 50%;
+}
+
+.alertForm {
+  color: red;
+}
+
+.profile_image {
+  width: 150px;
+  height: 150px;
+  border-radius: 25px;
+}
+

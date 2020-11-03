@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -40,4 +41,44 @@ class User extends Authenticatable
     public function role_users(){
         return $this->belongsToMany('App\Models\Role_user');
     }
+
+    public function autorizeRoles($roles){
+        if($this->hasAnyRoles($roles)){
+            return true;
+        }
+        abort(401, 'Esta acción no esta autorizada por tu perfil.');
+    }
+
+    public function hasAnyRoles($roles){
+        if(is_array($roles)){
+            foreach ($roles as $role){
+                if($this->hasRole($role)){
+                    return true;
+                }
+            }
+        }else{
+            if($this->hasRole($roles)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasRole($role){
+        $hasRole = Role_user::join('roles', 'role_users.role_id', '=', 'roles.id')
+            ->where('roles.name', $role)
+            ->where('role_users.user_id', Auth::user()->id)
+            ->first();
+        if($hasRole){
+            return true;
+        }
+        return false;
+    }
 }
+
+
+
+
+
+
+

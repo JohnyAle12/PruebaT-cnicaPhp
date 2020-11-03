@@ -18,8 +18,8 @@ class RoleSeeder extends Seeder
         $role->save();
 
         $role = New Role();
-        $role->name = "User";
-        $role->description = "Usuario de registro de la plataforma";
+        $role->name = "Clerk";
+        $role->description = "Usuario empleado con privilegios de gestionar clientes pero no eliminarlos";
         $role->save();
 
         $role = New Role();

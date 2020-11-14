@@ -15,7 +15,7 @@ class RoleUserSeeder extends Seeder
     public function run()
     {
         $role_admin= Role::where('name', 'Administrator')->first();
-    	$user = User::where('email', 'johny@mail.com')->first();
+    	$user = User::where('email', 'johnyprieto001@gmail.com')->first();
 
         $role_user = new Role_user();
         $role_user->user_id = $user->id;

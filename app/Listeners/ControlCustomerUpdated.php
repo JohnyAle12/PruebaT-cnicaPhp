@@ -32,5 +32,10 @@ class ControlCustomerUpdated
         $notification->description = 'Se ha modificado la informacion de un cliente a '.$event->customer->name;
         $notification->user_id = Auth::user()->id;
         $notification->save();
+
+        /*
+        $mensaje = "Bienviendido a ".config('app.name');
+        $mensaje = "Bienviendido a ".env('APP_NAME');
+        */
     }
 }

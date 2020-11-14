@@ -42,6 +42,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Role_user');
     }
 
+    public function customers(){
+        return $this->hasMany('App\Models\Customer');
+    }
+
     public function autorizeRoles($roles){
         if($this->hasAnyRoles($roles)){
             return true;

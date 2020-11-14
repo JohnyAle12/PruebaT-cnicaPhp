@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
+use App\Events\UserUpdated;
+use App\Jobs\ProcessExample;
+use App\Mail\RandomMessage;
 use App\Models\Role;
 use App\Models\Role_user;
-use App\Events\UserUpdated;
+use App\Models\User;
 use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Cookie;
 
 class UserController extends Controller
 {
@@ -83,5 +87,82 @@ class UserController extends Controller
         event(new UserUpdated($user, $request));
 
         return redirect()->route('perfil')->with('message', 'información actualizada con éxito.');
+    }
+
+    public function saveUserFromVue(Request $request){
+        $user = new User;
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        $user->save();
+
+        return response()->json([
+            'usuario' => $user
+        ]);
+    }
+
+    public function seeMail(){
+        return view('users.send-mail');
+    }
+
+    public function sendMail(){
+
+        $data=[
+            'user' => Auth::user()->name,
+            'name' => 'Juan Manuel Lopez',
+            'description' => 'I`m an engineer and work about eight hours diary'
+        ];
+
+        // es buena practica user queue en vez de send con el fin de que el usuario no tenga que esperar todo el proceso de envio y este quede en cola y se ejecute en segundo plano
+
+        Mail::to('johnyprieto001@gmail.com')->queue(new RandomMessage($data));
+        //Mail::to('johnyprieto001@gmail.com')->send(new RandomMessage);
+
+        return 'Mensaje enviado';
+    }
+
+    public function queuExample(){
+
+        // En el archivo env por defecto se utiliza rl driver sync, lo pasaremos a redis
+
+        logger('Tarea 1');
+        logger('Tarea 2');
+
+        ProcessExample::dispatch('Titulo de prueba')->delay(now()->addMinutes(1));;
+
+        return redirect()->route('home');
+    }
+
+    public function sessionData(){
+        //variable de sesion estatica, no se elimina
+        session(['status' => 'Task was successful!']);
+
+        //De esta manera creamos una session data tipo flash
+        //session()->flash('status', 'Task was successful!');
+
+        // puede pasarse variables flash al momento de redireccionar a la ruta
+        //return redirect()->route('home')->with('status', 'Task was successful!');
+
+        return redirect()->route('home');
+    }
+
+    public function deleteSessionData(){
+        session()->forget('status');
+        return redirect()->route('home');
+    }
+
+    public function usingCookie(){
+
+        //definimos una variable de cookie que dura un minuto
+
+        //Forma de setear cookie php puro setcookie('prueba', '1234', time()+60); este metodo no encripta la informacion
+        Cookie::queue('prueba', '5678', 1);
+        $value = Cookie::get('prueba');
+
+        // al colocar cookie la informacion se encripta en el navegador
+        return redirect()
+            ->route('home')
+            ->cookie('prueba2', '1234', 1) // 1 minuto
+            ->with('status', 'El valor de la cookie es '.$value);
     }
 }

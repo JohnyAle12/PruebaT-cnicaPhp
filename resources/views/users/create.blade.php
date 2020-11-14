@@ -8,7 +8,7 @@
                 <div class="card-header">Bienvenido {{ Auth::user()->name }}</div>
 
                 <div class="card-body">
-                    @include('layouts/nav')
+                    @include('layouts.nav')
                     <h3 class="mt-3">Crear usuario</h3>
                     @include('alerts.message_alert')
                     <form action="{{ route('usuario.store') }}" method="POST" enctype="" class="formCustomer">

@@ -13,7 +13,7 @@ class CustomerController extends Controller
     public function index()
     {
         Auth::user()->autorizeRoles(['Administrator']);
-        $customers = Customer::paginate(1);
+        $customers = Customer::paginate(10);
         return view('customers.index', compact('customers'));
     }
 
@@ -25,13 +25,14 @@ class CustomerController extends Controller
 
     public function store(CustomerRequest $request)
     {
-        Auth::user()->autorizeRoles(['Administrator']);
+        //Auth::user()->autorizeRoles(['Administrator']);
         $customer = new Customer;
         $customer->name = $request->get('name');
         $customer->email = $request->get('email');
         $customer->address = $request->get('address');
         $customer->gender = $request->get('gender');
         $customer->bith_date = $request->get('bith_date');
+        $customer->users()->associate(Auth::user());
         $customer->save();
 
         return redirect()->route('cliente.create')->with('message', 'el cliente se ha creado con éxito.');
@@ -39,7 +40,6 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        Auth::user()->autorizeRoles(['Administrator']);
         Auth::user()->autorizeRoles(['Administrator']);
         return view('customers.edit', compact('customer'));
     }

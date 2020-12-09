@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    private $role;
     /**
      * The attributes that are mass assignable.
      *
@@ -50,7 +51,8 @@ class User extends Authenticatable
         if($this->hasAnyRoles($roles)){
             return true;
         }
-        abort(401, 'Esta acción no esta autorizada por tu perfil.');
+        return false;
+        //abort(401, 'Esta acción no esta autorizada por tu perfil.');
     }
 
     public function hasAnyRoles($roles){
@@ -69,10 +71,14 @@ class User extends Authenticatable
     }
 
     public function hasRole($role){
-        $hasRole = Role_user::join('roles', 'role_users.role_id', '=', 'roles.id')
-            ->where('roles.name', $role)
-            ->where('role_users.user_id', Auth::user()->id)
-            ->first();
+        $this->role = $role;
+        $hasRole = cache()->tags(['roles'])->rememberForever('roles'.Auth::user()->id, function(){
+            return Role_user::join('roles', 'role_users.role_id', '=', 'roles.id')
+                    ->where('roles.name', $this->role)
+                    ->where('role_users.user_id', Auth::user()->id)
+                    ->first();
+        });
+
         if($hasRole){
             return true;
         }

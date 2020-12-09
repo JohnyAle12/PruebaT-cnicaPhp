@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<img :src="picture" style="width: 50px;height:50px" class="mt-3">
+		<!--<img :src="picture" style="width: 50px;height:50px" class="mt-3">-->
 		<h4 class="mt-3">Crear Usuario</h4>
 		<form @submit.prevent="saveUser" method="POST" enctype="" class="formCustomer mt-3">
 	        <div class="form-group">

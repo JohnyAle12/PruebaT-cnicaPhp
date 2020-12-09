@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Provider;
+use Auth;
 
 class ProviderController extends Controller
 {
 	public function index(){
-		$providers = Provider::all();
+		// hacemos uso de cache en el controlador
+		$providers = cache()->tags(['providers'])->rememberForever('providers'.Auth::user()->id, function(){
+			return Provider::all();
+		});
+		//$providers = Provider::all();
 		return view('providers.index', compact('providers'));
+	}
+
+	public function create(){
+		return view('providers.create');
 	}
 
     public function store(Request $request){
@@ -17,12 +26,19 @@ class ProviderController extends Controller
     	$provider->name = $request->name;
     	$provider->description = $request->description;
     	$provider->save();
+    	// eliminamos el cache con el tag providers, para que se actualice con los nuevos registros
+    	//cache()->tags(['providers'])->flush();
 
-    	return redirect()->route('provider.show', $provider->id);
+    	return redirect()->route('provider.index');
     }
 
     public function show(Provider $provider){
 		return view('providers.show', compact('provider'));
+	}
+
+	public function flush(){
+		cache()->tags(['providers'])->flush();
+		return redirect()->route('provider.index');
 	}
 
 	public function update(Provider $provider, Request $request){

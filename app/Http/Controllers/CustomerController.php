@@ -10,9 +10,15 @@ use Auth;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('checkrole:Administrator')->only('index');
+        // $this->middleware('log')->only('index');
+        // $this->middleware('subscribed')->except('store');
+    }
+
     public function index()
     {
-        Auth::user()->autorizeRoles(['Administrator']);
         $customers = Customer::paginate(10);
         return view('customers.index', compact('customers'));
     }

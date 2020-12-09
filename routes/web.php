@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
 Route::middleware(['auth'])->group(function () {
 	Route::resource('customer', 'CustomerController')->names('cliente')->middleware('auth');
 	Route::resource('user', 'UserController')->names('usuario');
@@ -31,16 +32,21 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('sendMail', 'UserController@sendMail')->name('enviar-correo.store');
 	Route::get('usingCookie', 'UserController@usingCookie')->name('galleta');
     Route::resource('provider', 'ProviderController')->names('provider');
+    Route::get('provider-flush', 'ProviderController@flush')->name('provider.flush');
+    Route::apiResource('articulos', 'ArticleController')->names('article');
 });
 
 Route::prefix('admin')->group(function () {
 	Route::get('examplePrefix', function () {
         // Matches The "/admin/examplePrefix" URL
         return 'Vista de ejemplo ruta con prefijo';
+    })->name('example.prefix');
+
+    Route::middleware(['checkrole:Administrator|Clerk'])->group(function () {
+        Route::get('session-data', 'UserController@sessionData')->name('sessiondata');
     });
 
-    Route::get('session-data', 'UserController@sessionData')->name('sessiondata');
-    Route::get('delete-session-data', 'UserController@deleteSessionData')->name('deletesessiondata');
+    Route::get('delete-session-data', 'UserController@deleteSessionData')->name('deletesessiondata')->middleware('checkrole:Administrator|Clerk');
 });
 
 Route::name('admin.')->middleware(['auth'])->group(function () {
@@ -54,8 +60,17 @@ Route::name('admin.')->middleware(['auth'])->group(function () {
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home1', 'HomeController@ejercicio');
 
+Route::get('vista-ejemplo', 'HomeController@vistaEjemplo');
+Route::post('solucion', 'HomeController@solucionEjemplo')->name('solucion.ejemplo');
 
+Route::pattern('id', '[0-9]{4}');
+Route::get('examplePattern/{id}', function ($id) {
+    return $id;
+});
+
+Route::get('consumo-api', 'HomeController@consumoApi')->name('consumo.api');
 
 
 

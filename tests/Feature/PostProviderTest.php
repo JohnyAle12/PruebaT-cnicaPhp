@@ -30,7 +30,7 @@ class PostProviderTest extends TestCase
         $this->assertEquals($provider->name, 'Alpina S.A.');
         $this->assertEquals($provider->description, 'Empresa de lacteos');
 
-        $response->assertRedirect(route('provider.show', $provider->id));
+        $response->assertRedirect(route('provider.index'));
     }
 
     /** @test */

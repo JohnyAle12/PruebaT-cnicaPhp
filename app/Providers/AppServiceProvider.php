@@ -15,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //cargamos el helper a nivel de framework
+        require_once __DIR__ . '/../Helpers/CustomName.php';
     }
 
     /**

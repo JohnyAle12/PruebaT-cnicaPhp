@@ -24,11 +24,20 @@ Vue.component('user-component', require('./components/users/show.vue').default);
 Vue.component('spinner', require('./components/Spinner.vue').default);
 Vue.component('create-user-component', require('./components/users/create.vue').default);
 
+Vue.component('create-article-component', require('./components/articles/create.vue').default);
+Vue.component('article-component', require('./components/articles/show.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+Vue.prototype.$eventHub = new Vue(); // Global event bus
+Vue.prototype.$alertName = function(name){
+    alert('Hola '+name+', el articulo ha sido guardado');
+};
+
 const app = new Vue({
     el: '#app',
 });

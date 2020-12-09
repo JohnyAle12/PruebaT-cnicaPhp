@@ -123,7 +123,7 @@ class UserController extends Controller
 
     public function queuExample(){
 
-        // En el archivo env por defecto se utiliza rl driver sync, lo pasaremos a redis
+        // En el archivo .env por defecto se utiliza el driver sync, lo pasaremos a redis
 
         logger('Tarea 1');
         logger('Tarea 2');
@@ -155,7 +155,7 @@ class UserController extends Controller
 
         //definimos una variable de cookie que dura un minuto
 
-        //Forma de setear cookie php puro setcookie('prueba', '1234', time()+60); este metodo no encripta la informacion
+        //Forma de setear cookie php setcookie('prueba', '1234', time()+60); este metodo no encripta la informacion
         Cookie::queue('prueba', '5678', 1);
         $value = Cookie::get('prueba');
 

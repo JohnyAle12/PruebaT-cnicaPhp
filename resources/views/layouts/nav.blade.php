@@ -8,6 +8,12 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('perfil') }}">Perfil</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('article.index') }}">Crud VueJs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('consumo.api') }}">Consumo API</a>
+        </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Usuarios
@@ -38,11 +44,21 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{ route('admin.example') }}">Ejemplo grupo nombre</a>
-              <a class="dropdown-item" href="{{ '/admin/examplePrefix' }}">Ejemplo grupo prefijo</a>
+              <a class="dropdown-item" href="{{ route('example.prefix') }}">Ejemplo grupo prefijo</a>
             </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.queues') }}">Colas</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Cache
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ route('provider.index') }}">Inicio</a>
+              <a class="dropdown-item" href="{{ route('provider.create') }}">Crear</a>
+              <a class="dropdown-item" href="{{ route('provider.flush') }}">Flush Cache</a>
+            </div>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
